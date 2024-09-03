@@ -31,7 +31,7 @@ namespace api.Controllers
 
         [HttpGet("{id}")]
         public async Task<IActionResult> getById([FromRoute] int id) {
-            var pet = await _context.Pets.FirstOrDefaultAsync(p => p.Id == id);
+            var pet = await _context.Pets.FirstOrDefaultAsync(p => p.id == id);
             if (pet == null) {
                 return NotFound();
             }

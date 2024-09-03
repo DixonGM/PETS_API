@@ -15,5 +15,13 @@ namespace api.Mappers
                 Animal = pet.Animal
             };
         }
+
+
+        public static Pet ToPetFromCreateDto(this CreatePetRequestDto createPetRequest){
+            return new Pet{
+                Name = createPetRequest.Name,
+                Animal = createPetRequest.Animal
+            };
+        }
     }
 }

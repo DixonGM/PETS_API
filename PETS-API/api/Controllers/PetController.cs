@@ -30,14 +30,15 @@ namespace api.Controllers
 
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> getById([FromRoute] int id){
-
-            var pet =  await _context.Pets.Include(pet => pet).FirstOrDefaultAsync(p => p.id == id);
-            if(pet == null){
+        public async Task<IActionResult> getById([FromRoute] int id) {
+            var pet = await _context.Pets.FirstOrDefaultAsync(p => p.Id == id);
+            if (pet == null) {
                 return NotFound();
             }
             return Ok(pet.ToDto());
         }
+
+
 
         //create
         [HttpPost]

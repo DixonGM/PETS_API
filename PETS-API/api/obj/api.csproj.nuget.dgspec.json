@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\dixon\\OneDrive\\Documentos\\Ciclo ll 2024\\Fundamentos Web\\PETS-API\\api\\api.csproj": {}
+    "C:\\Users\\dixon\\OneDrive\\Documentos\\Ciclo ll 2024\\Fundamentos Web\\PETS_API\\PETS-API\\api\\api.csproj": {}
   },
   "projects": {
-    "C:\\Users\\dixon\\OneDrive\\Documentos\\Ciclo ll 2024\\Fundamentos Web\\PETS-API\\api\\api.csproj": {
+    "C:\\Users\\dixon\\OneDrive\\Documentos\\Ciclo ll 2024\\Fundamentos Web\\PETS_API\\PETS-API\\api\\api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\dixon\\OneDrive\\Documentos\\Ciclo ll 2024\\Fundamentos Web\\PETS-API\\api\\api.csproj",
+        "projectUniqueName": "C:\\Users\\dixon\\OneDrive\\Documentos\\Ciclo ll 2024\\Fundamentos Web\\PETS_API\\PETS-API\\api\\api.csproj",
         "projectName": "api",
-        "projectPath": "C:\\Users\\dixon\\OneDrive\\Documentos\\Ciclo ll 2024\\Fundamentos Web\\PETS-API\\api\\api.csproj",
+        "projectPath": "C:\\Users\\dixon\\OneDrive\\Documentos\\Ciclo ll 2024\\Fundamentos Web\\PETS_API\\PETS-API\\api\\api.csproj",
         "packagesPath": "C:\\Users\\dixon\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\dixon\\OneDrive\\Documentos\\Ciclo ll 2024\\Fundamentos Web\\PETS-API\\api\\obj\\",
+        "outputPath": "C:\\Users\\dixon\\OneDrive\\Documentos\\Ciclo ll 2024\\Fundamentos Web\\PETS_API\\PETS-API\\api\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

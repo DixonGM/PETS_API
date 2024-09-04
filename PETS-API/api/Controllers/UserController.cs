@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using api.Dtos.User;
 using api.Mappers;
+using api.Models; 
 
 namespace api.Controllers
 {
@@ -123,6 +124,48 @@ namespace api.Controllers
             return Ok(new { message = $"Nombre de Mascota '{petName}' Animal '{petAnimal}' asignada al usuario '{userName}' correctamente." });
         }
 
+
+
+        [HttpPost("create-user-with-pets")]
+        public async Task<IActionResult> CreateUserWithPets([FromBody] CreateUserRequestDto userDto)
+        {
+            // Crear el modelo de usuario
+            var userModel = new User
+            {
+                FirstName = userDto.FirstName,
+                LastName = userDto.LastName,
+                Age = userDto.Age,
+                CreatedAt = DateTime.Now
+            };
+
+            // Creo las mascotas y las asigno al usuario
+            if (userDto.Pets != null && userDto.Pets.Any())
+            {
+                userModel.pets = userDto.Pets.Select(petDto => new Pet
+                {
+                    Name = petDto.Name,
+                    Animal = petDto.Animal,
+                    UserId = userModel.id 
+                }).ToList();
+            }
+
+            
+            await _context.Users.AddAsync(userModel);
+
+          
+            await _context.SaveChangesAsync();
+
+            
+            foreach (var pet in userModel.pets)
+            {
+                pet.UserId = userModel.id;
+            }
+
+           
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(getById), new { id = userModel.id }, userModel.ToDto());
+        }
 
 
     }

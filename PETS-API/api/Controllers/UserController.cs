@@ -81,43 +81,49 @@ namespace api.Controllers
         }
 
 
-        /*
-         // Asignar una mascota a un usuario
         [HttpPost("{userId}/assign-pet/{petId}")]
         public async Task<IActionResult> AssignPet([FromRoute] int userId, [FromRoute] int petId)
         {
-            // Obtener el usuario y la mascota de la base de datos
-            var user = await _context.Users.Include(u => u.Pets).FirstOrDefaultAsync(u => u.Id == userId);
-            var pet = await _context.Pets.FirstOrDefaultAsync(p => p.Id == petId);
+           
+            var user = await _context.Users.Include(u => u.pets).FirstOrDefaultAsync(u => u.id == userId);
+            var pet = await _context.Pets.FirstOrDefaultAsync(p => p.id == petId);
 
-            // Verificar si el usuario y la mascota existen
+            // Verifico si el usuario y la mascota existen
             if (user == null)
             {
-                return NotFound($"User with ID {userId} not found.");
+                return NotFound($"Usuario con ID {userId} no encontrado.");
             }
 
             if (pet == null)
             {
-                return NotFound($"Pet with ID {petId} not found.");
+                return NotFound($"Mascota con ID {petId} no encontrada.");
             }
 
-            // Verificar si la mascota ya está asignada al usuario
-            if (user.Pets.Any(p => p.Id == petId))
+            // Verifico si la mascota ya esta asignada al usuario
+            if (user.pets.Any(p => p.id == petId))
             {
-                return BadRequest($"Pet with ID {petId} is already assigned to user with ID {userId}.");
+                return BadRequest($"La mascota con ID {petId} ya está asignada al usuario con ID {userId}.");
             }
 
-            // Asignar la mascota al usuario
-            user.Pets.Add(pet);
+            // Asigno la mascota al usuario
+            user.pets.Add(pet);
+            
 
-            // Guardar los cambios en la base de datos
+            pet.UserId = userId;
+
+            
             await _context.SaveChangesAsync();
 
-            return Ok(new { message = "Pet assigned to user successfully." });
+            
+            var userName = $"{user.FirstName} {user.LastName}";
+            var petName = pet.Name;
+            var petAnimal = pet.Animal;
+
+            
+            return Ok(new { message = $"Nombre de Mascota '{petName}' Animal '{petAnimal}' asignada al usuario '{userName}' correctamente." });
         }
 
 
-        */
 
     }
 }

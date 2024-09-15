@@ -11,8 +11,17 @@ namespace api.Mappers
     {
         public static PetDto ToDto(this Pet pet){
             return new PetDto{
+                Id = pet.id,
                 Name = pet.Name,
-                Animal = pet.Animal
+                Animal = pet.Animal,
+            };
+        }
+
+
+        public static Pet ToPetFromCreateDto(this CreatePetRequestDto createPetRequest){
+            return new Pet{
+                Name = createPetRequest.Name,
+                Animal = createPetRequest.Animal
             };
         }
     }

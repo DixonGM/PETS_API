@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using api.Dtos.User;
 using api.Mappers;
+using api.Models; 
 
 namespace api.Controllers
 {
@@ -79,6 +80,93 @@ namespace api.Controllers
 
             return NoContent();
         }
+
+
+        [HttpPost("{userId}/assign-pet/{petId}")]
+        public async Task<IActionResult> AssignPet([FromRoute] int userId, [FromRoute] int petId)
+        {
+           
+            var user = await _context.Users.Include(u => u.pets).FirstOrDefaultAsync(u => u.id == userId);
+            var pet = await _context.Pets.FirstOrDefaultAsync(p => p.id == petId);
+
+            // Verifico si el usuario y la mascota existen
+            if (user == null)
+            {
+                return NotFound($"Usuario con ID {userId} no encontrado.");
+            }
+
+            if (pet == null)
+            {
+                return NotFound($"Mascota con ID {petId} no encontrada.");
+            }
+
+            // Verifico si la mascota ya esta asignada al usuario
+            if (user.pets.Any(p => p.id == petId))
+            {
+                return BadRequest($"La mascota con ID {petId} ya está asignada al usuario con ID {userId}.");
+            }
+
+            // Asigno la mascota al usuario
+            user.pets.Add(pet);
+            
+
+            pet.UserId = userId;
+
+            
+            await _context.SaveChangesAsync();
+
+            
+            var userName = $"{user.FirstName} {user.LastName}";
+            var petName = pet.Name;
+            var petAnimal = pet.Animal;
+
+            
+            return Ok(new { message = $"Nombre de Mascota '{petName}' Animal '{petAnimal}' asignada al usuario '{userName}' correctamente." });
+        }
+
+
+
+        [HttpPost("create-user-with-pets")]
+        public async Task<IActionResult> CreateUserWithPets([FromBody] CreateUserRequestDto userDto)
+        {
+            // Crear el modelo de usuario
+            var userModel = new User
+            {
+                FirstName = userDto.FirstName,
+                LastName = userDto.LastName,
+                Age = userDto.Age,
+                CreatedAt = DateTime.Now
+            };
+
+            // Creo las mascotas y las asigno al usuario
+            if (userDto.Pets != null && userDto.Pets.Any())
+            {
+                userModel.pets = userDto.Pets.Select(petDto => new Pet
+                {
+                    Name = petDto.Name,
+                    Animal = petDto.Animal,
+                    UserId = userModel.id 
+                }).ToList();
+            }
+
+            
+            await _context.Users.AddAsync(userModel);
+
+          
+            await _context.SaveChangesAsync();
+
+            
+            foreach (var pet in userModel.pets)
+            {
+                pet.UserId = userModel.id;
+            }
+
+           
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(getById), new { id = userModel.id }, userModel.ToDto());
+        }
+
 
     }
 }
